@@ -71,7 +71,7 @@ public final class UploadHelper {
         try {
             //使用servltFileUpload对象来解析请求参数
             Map<String, List<FileItem>> fileItemListMap = servletFileUpload.parseParameterMap(request);
-            //通过遍历所有请求参数来初始化formParamListhefileParamList
+            //通过遍历所有请求参数来初始化fileParamList
             if(CollectionUtil.isNotEmpty(fileItemListMap)){
                 for(Map.Entry<String, List<FileItem>> fileItemListEntry : fileItemListMap.entrySet()){
                     String fieldName = fileItemListEntry.getKey();

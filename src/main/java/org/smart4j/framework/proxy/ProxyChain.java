@@ -39,7 +39,7 @@ public class ProxyChain {
     /**
      * 代理列表
      */
-    private List<Proxy> proxyList = new ArrayList<>();
+    private List<Proxy> proxyList = new ArrayList();
 
     /**
      * 代理索引

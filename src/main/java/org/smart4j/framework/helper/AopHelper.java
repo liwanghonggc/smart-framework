@@ -53,8 +53,9 @@ public final class AopHelper {
      * @throws Exception
      */
     private static Set<Class<?>> createTargetClassSet(Aspect aspect) throws Exception{
-        Set<Class<?>> targetClassSet = new HashSet<>();
+        Set<Class<?>> targetClassSet = new HashSet();
         Class<? extends Annotation> annotation = aspect.value();
+        //此处该annotation就是Controller
         if(annotation != null && !annotation.equals(Aspect.class)){
             targetClassSet.addAll(ClassHelper.getClassSetByAnnotation(annotation));
         }
@@ -68,9 +69,10 @@ public final class AopHelper {
      * 类集合的映射关系,最终返回这个映射关系
      */
     private static Map<Class<?>, Set<Class<?>>> createProxyMap() throws Exception{
-        Map<Class<?>, Set<Class<?>>> proxyMap = new HashMap<>();
+        Map<Class<?>, Set<Class<?>>> proxyMap = new HashMap();
 
         //添加普通切面代理
+        //如chapter3中使用@Aspect(Controller.class)标注的ControllerAspect用于记录Controller中方法执行的前后时间
         addAspectProxy(proxyMap);
         //添加事务代理
         addTransactionProxy(proxyMap);
@@ -79,11 +81,15 @@ public final class AopHelper {
     }
 
     private static void addAspectProxy(Map<Class<?>, Set<Class<?>>> proxyMap) throws Exception{
+        //先获取AspectProxy的子类
         Set<Class<?>> proxyClassSet = ClassHelper.getClassSetBySuper(AspectProxy.class);
 
         for(Class<?> proxyClass : proxyClassSet){
+            //看子类上有没有标注Aspect注解
             if(proxyClass.isAnnotationPresent(Aspect.class)){
                 Aspect aspect = proxyClass.getAnnotation(Aspect.class);
+                //获取Aspect注解括号中的classSet,如@Aspect(Controller.class),说明使用了Aspect该注解是要对
+                //Controller.class进行AOP代理,则获取所有的Controller类
                 Set<Class<?>> targetClassSet = createTargetClassSet(aspect);
                 proxyMap.put(proxyClass, targetClassSet);
             }
@@ -103,7 +109,7 @@ public final class AopHelper {
      * @throws Exception
      */
     private static Map<Class<?>, List<Proxy>> createTargetMap(Map<Class<?>, Set<Class<?>>> proxyMap) throws Exception{
-        Map<Class<?>, List<Proxy>> targetMap = new HashMap<>();
+        Map<Class<?>, List<Proxy>> targetMap = new HashMap();
         for(Map.Entry<Class<?>, Set<Class<?>>> proxyEntry : proxyMap.entrySet()){
             //形如TransactionProxy.class
             Class<?> proxyClass = proxyEntry.getKey();
@@ -115,7 +121,7 @@ public final class AopHelper {
                 if(targetMap.containsKey(targetClass)){
                     targetMap.get(targetClass).add(proxy);
                 }else{
-                    List<Proxy> proxyList = new ArrayList<>();
+                    List<Proxy> proxyList = new ArrayList();
                     proxyList.add(proxy);
                     targetMap.put(targetClass, proxyList);
                 }
