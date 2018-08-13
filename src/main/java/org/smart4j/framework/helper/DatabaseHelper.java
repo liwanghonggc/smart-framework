@@ -73,24 +73,6 @@ public final class DatabaseHelper {
     }
 
     /**
-     * 关闭数据库连接
-     * 使用数据库连接池后,注释掉该方法
-     */
-    /*public static void closeConnection(){
-        Connection conn = CONNECTION_HOLDER.get();
-        if(conn != null){
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                LOGGER.error("close connection failure", e);
-                throw new RuntimeException(e);
-            } finally {
-                CONNECTION_HOLDER.remove();
-            }
-        }
-    }*/
-
-    /**
      * 开启事务
      */
     public static void beginTransaction(){

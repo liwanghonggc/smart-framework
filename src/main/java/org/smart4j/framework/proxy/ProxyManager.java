@@ -25,6 +25,7 @@ public class ProxyManager {
      */
     public static <T> T createProxy(final Class<?> targetClass, final List<Proxy> proxyList){
         return (T) Enhancer.create(targetClass, new MethodInterceptor() {
+            /** CGLIB动态代理的关键,代理对象调用目标对象方法时,会先调用该方法,从而形成链式调用 **/
             @Override
             public Object intercept(Object targetObject, Method targetMethod,
                                     Object[] methodParams, MethodProxy methodProxy) throws Throwable {

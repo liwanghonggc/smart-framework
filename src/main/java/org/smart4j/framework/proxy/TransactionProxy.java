@@ -21,6 +21,12 @@ public class TransactionProxy implements Proxy{
         }
     };
 
+    /**
+     * 事务管理
+     * @param proxyChain
+     * @return
+     * @throws Throwable
+     */
     @Override
     public Object doProxy(ProxyChain proxyChain) throws Throwable {
         Object result;

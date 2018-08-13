@@ -28,8 +28,10 @@ public final class AopHelper {
         try {
             //获取代理类与目标类集合的映射关系,形如Map<TransactionProxy.class, Set<CustomerService.class,...>>
             Map<Class<?>, Set<Class<?>>> proxyMap = createProxyMap();
+
             //进一步获取目标类与代理对象列表的映射关系,形如Map<CustomerService.class, List<new TransactionProxy()...>>
             Map<Class<?>, List<Proxy>> targetMap = createTargetMap(proxyMap);
+
             //遍历这个映射关系,从中获取目标类与代理对象列表,调用ProxyManager.createProxy方法
             //获取代理对象,放入Bean Map中
             for(Map.Entry<Class<?>, List<Proxy>> targetEntry : targetMap.entrySet()){
@@ -80,6 +82,11 @@ public final class AopHelper {
         return proxyMap;
     }
 
+    /**
+     * 添加普通切面代理
+     * @param proxyMap
+     * @throws Exception
+     */
     private static void addAspectProxy(Map<Class<?>, Set<Class<?>>> proxyMap) throws Exception{
         //先获取AspectProxy的子类
         Set<Class<?>> proxyClassSet = ClassHelper.getClassSetBySuper(AspectProxy.class);
@@ -91,11 +98,17 @@ public final class AopHelper {
                 //获取Aspect注解括号中的classSet,如@Aspect(Controller.class),说明使用了Aspect该注解是要对
                 //Controller.class进行AOP代理,则获取所有的Controller类
                 Set<Class<?>> targetClassSet = createTargetClassSet(aspect);
+
+                //proxyClass例如ControllerAspect类,该类Aspect注解中Controller.class表示它是要对所有Controller类做增强
                 proxyMap.put(proxyClass, targetClassSet);
             }
         }
     }
 
+    /**
+     * 添加事务代理
+     * @param proxyMap
+     */
     private static void addTransactionProxy(Map<Class<?>, Set<Class<?>>> proxyMap){
         Set<Class<?>> serviceClassSet = ClassHelper.getClassSetByAnnotation(Service.class);
         proxyMap.put(TransactionProxy.class, serviceClassSet);
