@@ -39,7 +39,7 @@ public class ProxyChain {
     /**
      * 代理列表
      */
-    private List<Proxy> proxyList = new ArrayList();
+    private List<Proxy> proxyList;
 
     /**
      * 代理索引
@@ -82,6 +82,7 @@ public class ProxyChain {
         if(proxyIndex < proxyList.size()){
             methodResult = proxyList.get(proxyIndex++).doProxy(this);
         }else{
+            //此处使用FastClass机制,调用目标方法
             methodResult = methodProxy.invokeSuper(targetObject, methodParams);
         }
         return methodResult;

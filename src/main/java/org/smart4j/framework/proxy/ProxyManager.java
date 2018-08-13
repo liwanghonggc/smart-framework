@@ -1,5 +1,6 @@
 package org.smart4j.framework.proxy;
 
+import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -15,6 +16,13 @@ import java.util.List;
  */
 public class ProxyManager {
 
+    /**
+     * 看下面的方法发现,该方法就是生成代理类
+     * @param targetClass
+     * @param proxyList
+     * @param <T>
+     * @return
+     */
     public static <T> T createProxy(final Class<?> targetClass, final List<Proxy> proxyList){
         return (T) Enhancer.create(targetClass, new MethodInterceptor() {
             @Override
@@ -24,5 +32,13 @@ public class ProxyManager {
                         proxyList).doProxyChain();
             }
         });
+    }
+
+    //下面该方法并没有被使用到,仅是解释上面方法的
+    public static Object create(Class type, Callback callback) {
+        Enhancer e = new Enhancer();
+        e.setSuperclass(type);
+        e.setCallback(callback);
+        return e.create();
     }
 }

@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * 请求转发器
  */
-@WebServlet(urlPatterns = "/*", loadOnStartup = -1)
+@WebServlet(urlPatterns = "/*", loadOnStartup = 1)
 public class DispatcherServlet extends HttpServlet{
 
     @Override

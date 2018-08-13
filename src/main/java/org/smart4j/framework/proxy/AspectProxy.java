@@ -9,6 +9,8 @@ import java.lang.reflect.Method;
  * 切面代理
  * 在切面类中,需要在目标方法被调用的前后增加相应的逻辑
  * 提供一个模板方法,在该抽象类的具体实现中扩展相应的抽象方法
+ * TransactionProxy直接实现了Proxy提供了具体的事务功能
+ * AspectProxy只是一个通用的切面代理,若想提供某AOP功能可继承该类
  */
 public abstract class AspectProxy implements Proxy{
 
